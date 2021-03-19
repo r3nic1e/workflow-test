@@ -6,9 +6,6 @@ on:
       - main
     types:
       - closed
-  push:
-    branches:
-      - main
 
 jobs:
   tagger:
@@ -16,7 +13,7 @@ jobs:
     steps:
       - name: Create tag
         uses: actions/github-script@v3
-        if: github.event.pull_request.merged == 'true' && startsWith(github.event.pull_request.head.ref, "release-")
+        if: github.event.pull_request.merged == 'true' && startsWith(github.event.pull_request.head.ref, 'release-')
         with:
           github-token: ${{ github.token }}
           script: |
