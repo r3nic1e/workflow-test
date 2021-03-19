@@ -3,9 +3,12 @@ name: Create tag
 on:
   pull_request_target:
     branches:
-      - release-.*
+      - main
     types:
       - closed
+  push:
+    branches:
+      - main
 
 jobs:
   tagger:
@@ -13,7 +16,7 @@ jobs:
     steps:
       - name: Create tag
         uses: actions/github-script@v3
-        #if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == 'true' && startsWith(github.event.pull_request.head.ref, "release-")
         with:
           github-token: ${{ github.token }}
           script: |
