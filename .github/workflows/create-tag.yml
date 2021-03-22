@@ -32,17 +32,32 @@ jobs:
           result-encoding: string
     outputs:
       tag: ${{ steps.tag.outputs.result }}
-  release:
+
+  get-tag:
     runs-on: ubuntu-latest
     if: always()
     needs:
       - tagger
     steps:
-      - name: debug
-        env:
-          EVENT: ${{ toJSON(github.event) }}
-          NEEDS: ${{ toJSON(needs) }}
-          OUTPUTS: ${{ toJSON(needs.tagger.outputs) }}
-        run: echo "$NEEDS"
+      - name: get pushed tag
+        id: pushed
+        if: needs.tagger.result != 'success'
+        run: echo "::set-output name=tag::${refs/tags/#$GITHUB_REF}"
 
-      - run: echo $GITHUB_REF
+      - name: get created tag
+        id: created
+        run: echo "::set-output name=tag::$TAG"
+        if: needs.tagger.result == 'success'
+        env:
+          TAG: "${{ needs.tagger.outputs.tag }}"
+    outputs:
+      tag: ${{ steps.pushed.outputs.tag }}${{ steps.created.outputs.tag }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - get-tag
+    steps:
+      - run: echo $TAG
+        env:
+          TAG: "${{ needs.get-tag.outputs.tag }}"
