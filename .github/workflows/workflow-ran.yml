@@ -4,8 +4,6 @@ on:
   workflow_run:
     workflows:
       - Create tag
-    branches:
-      - main
     types:
       - completed
 
