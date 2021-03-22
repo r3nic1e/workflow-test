@@ -50,12 +50,19 @@ jobs:
         if: needs.tagger.result == 'success'
         env:
           TAG: "${{ needs.tagger.outputs.tag }}"
+
+      - name: combine tags
+        id: combined
+        run: echo "::set-output name=tag::$CREATED$PUSHED"
+        env:
+          CREATED: ${{ steps.created.outputs.tag }}
+          PUSHED: ${{ steps.pushed.outputs.tag }}
     outputs:
-      tag: ${{ steps.pushed.outputs.tag }}${{ steps.created.outputs.tag }}
+      tag: ${{ steps.combined.outputs.tag }}
 
   release:
     runs-on: ubuntu-latest
-    if: always() || needs.get-tag.result == 'success'
+    if: always()
     needs:
       - get-tag
     steps:
