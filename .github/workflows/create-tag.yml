@@ -35,7 +35,7 @@ jobs:
 
   get-tag:
     runs-on: ubuntu-latest
-    if: success() || cancelled()
+    if: success() || needs.tagger.result == 'skipped'
     needs:
       - tagger
     steps:
@@ -55,7 +55,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    if: success() || cancelled()
+    if: needs.get-tag.result == 'success'
     needs:
       - get-tag
     steps:
