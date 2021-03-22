@@ -1,0 +1,11 @@
+name: Run on pushed tag
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  tag-push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo $GITHUB_REF
