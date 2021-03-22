@@ -1,0 +1,16 @@
+name: Run on pushed tag
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  tag-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug
+        env:
+          EVENT: ${{ toJSON(github.event) }}
+        run: echo "$EVENT"
+
+      - run: echo $GITHUB_REF
