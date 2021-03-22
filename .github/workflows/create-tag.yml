@@ -34,12 +34,15 @@ jobs:
       tag: ${{ steps.tag.outputs.result }}
   release:
     runs-on: ubuntu-latest
+    if: always()
     needs:
       - tagger
     steps:
       - name: debug
         env:
           EVENT: ${{ toJSON(github.event) }}
-        run: echo "$EVENT"
+          NEEDS: ${{ toJSON(needs) }}
+          OUTPUTS: ${{ toJSON(needs.tagger.outputs) }}
+        run: echo "$NEEDS"
 
       - run: echo $GITHUB_REF
