@@ -1,0 +1,22 @@
+name: Run on completed workflow
+
+on:
+  workflow_run:
+    workflows:
+      - Create tag
+    branches:
+      - main
+    types:
+      - completed
+
+jobs:
+  after-workflow:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: debug
+        env:
+          EVENT: ${{ toJSON(github.event) }}
+        run: echo "$EVENT"
+
+      - run: echo $GITHUB_REF
