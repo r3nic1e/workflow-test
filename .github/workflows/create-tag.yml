@@ -43,6 +43,8 @@ jobs:
         id: pushed
         if: needs.tagger.result != 'success'
         run: echo "::set-output name=tag::${refs/tags/#$GITHUB_REF}"
+        env:
+          GITHUB_REF: ${{ github.ref }}
 
       - name: get created tag
         id: created
@@ -62,7 +64,6 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    if: always()
     needs:
       - get-tag
     steps:
