@@ -17,6 +17,7 @@ jobs:
         run: echo "$EVENT"
 
       - name: Create tag
+        id: tag
         uses: actions/github-script@v3
         if: github.event.pull_request.merged && startsWith(github.event.pull_request.head.ref, 'release-')
         with:
@@ -31,4 +32,6 @@ jobs:
             })
             return tag
           result-encoding: string
+    outputs:
+      tag: ${{ steps.tag.outputs.result }}
 
