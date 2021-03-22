@@ -29,4 +29,6 @@ jobs:
               ref: "refs/tags/" + tag,
               sha: context.payload.pull_request.merge_commit_sha
             })
+            return tag
+          result-encoding: string
 
