@@ -55,7 +55,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    if: needs.get-tag.result == 'success'
+    if: always() || needs.get-tag.result == 'success'
     needs:
       - get-tag
     steps:
