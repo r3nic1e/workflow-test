@@ -66,6 +66,8 @@ jobs:
     needs:
       - get-tag
     steps:
-      - run: echo $TAG
-        env:
-          TAG: "${{ needs.get-tag.outputs.tag }}"
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.get-tag.outputs.tag }}
+
