@@ -13,6 +13,7 @@ jobs:
   tagger:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    continue-on-error: true
     steps:
       - name: Create tag
         id: tag
